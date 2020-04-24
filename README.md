@@ -206,7 +206,7 @@ The default/recommended config should look something like this:
     "obscureDomainChecking": false,
     "injectCode": true,
     "injectionCodePath": "injection.html",
-    "removeCachingHeaders": true,
+    "removeCachingHeaders": false,
     "removeAllIntegrityAttributes": true,
     "publicFolder": "public_root/",
     "filterMimeTypes": [
