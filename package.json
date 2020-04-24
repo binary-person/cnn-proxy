@@ -1,0 +1,29 @@
+{
+  "name": "cnn-proxy",
+  "version": "1.0.0",
+  "description": "Subdomain method that proxies websockets, XMLHttpRequests, and more.",
+  "main": "index.js",
+  "dependencies": {
+    "node-static": "^0.7.11",
+    "replacestream": "^4.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scheng123/cnn-proxy.git"
+  },
+  "keywords": [
+    "proxy",
+    "websockets",
+    "http"
+  ],
+  "author": "Simon Cheng",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/scheng123/cnn-proxy/issues"
+  },
+  "homepage": "https://github.com/scheng123/cnn-proxy#readme"
+}

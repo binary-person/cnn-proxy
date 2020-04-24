@@ -1,0 +1,52 @@
+<html>
+    <body style='text-align: center;'>
+        <h1>CNN Proxy</h1>
+        <h3>Cloudflare + Nginx + Node</h3>
+        <p>This is perhaps the most crap UI I've ever designed since I did it in a rush, but if anyone wants to contribute to the UI, DM me.</p>
+        <p>Also, since I will make this open source (after you guys test it out), don't send a clocked UI to me if you're willing to contribute.</p>
+        <input id='urlbar' type='text' placeholder='URL of the website'>
+        <button id='goButton'>Go!</button>
+        <script>
+             (function(){
+                 // adopted from injection.html
+                var domain = window.location.host.split('.').slice(-2).join('.');
+                function convertURL(url){
+                    try{
+                        var tempURL = url.replace(/^\/\//, 'https://');
+                        var parsedURL = new URL(tempURL);
+                        if(parsedURL.host.split('.').slice(-2).join('.') === domain){
+                            return false;
+                        }
+                    }catch(e){
+                        return false;
+                    }
+                    
+                    if(/^https?:\/\/|^\/\//i.test(url)){
+                        return url.replace(/^(http:\/\/|https:\/\/|\/\/)([^\/:]*)(?::(\d+))?/ig,
+                        function(match, protocolCap, bodyURLCap, optionPortCap){ // cap for capture
+                            protocolCap = (protocolCap.toLowerCase()==='//'?window.location.protocol+'//':protocolCap);
+                            return window.location.protocol+'//'+(protocolCap.toLowerCase()==='https://'?'s':'ns')+(optionPortCap ? optionPortCap : '')+'--'+bodyURLCap.replace(/-/g, '_-').replace(/\./g, '--')+'.'+domain;
+                        });
+                    }else if(/^wss?:\/\//i.test(url)){
+                        return url.replace(/^ws(s):\/\/?([^\/:]*)(?::(\d+))?/ig,
+                        function(match, protocolCap, bodyURLCap, optionPortCap){ // cap for capture
+                            return (window.location.protocol === 'https:' ? 'wss:' : 'ws:')+'//'+(protocolCap.toLowerCase()==='s'?'s':'ns')+(optionPortCap ? optionPortCap : '')+'--'+bodyURLCap.replace(/-/g, '_-').replace(/\./g, '--')+'.'+domain;
+                        });
+                    }else{
+                        return false;
+                    }
+                }
+                
+                var urlbar = document.getElementById('urlbar');
+                document.getElementById('goButton').onclick = function(){
+                    var getConvertedURL = convertURL(urlbar.value);
+                    if(getConvertedURL){
+                        window.open(getConvertedURL);
+                    }else{
+                        alert('Bruh, dat bad url');
+                    }
+                };
+             })();
+        </script>
+    </body>
+</html>

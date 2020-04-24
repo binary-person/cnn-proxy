@@ -1,0 +1,27 @@
+{
+    "bindingAddress": "127.0.0.1",
+    "port": 8888,
+    "enableFilterJavascript": false,
+    "obscureDomainChecking": false,
+    "injectCode": true,
+    "injectionCodePath": "injection.html",
+    "removeCachingHeaders": true,
+    "removeAllIntegrityAttributes": true,
+    "publicFolder": "public_root/",
+    "filterMimeTypes": [
+        "/html",
+        "/css",
+        "/javascript",
+        "/json"
+    ],
+    "associateMime": {
+    	"" : "text/html",
+    	"html" : "text/html",
+    	"js": "application/javascript",
+    	"css": "text/css"
+    },
+    "defaultMime": "application/octet-stream",
+    "blacklistDomains": [
+        "example\\.com"
+    ]
+}

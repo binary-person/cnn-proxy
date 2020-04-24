@@ -1,0 +1,137 @@
+<script>
+    (function() {
+        if(window.disableCNNProxy) return;
+        window.disableCNNProxy = true; // prevent double wrapping
+        
+        // Define necessary functions for wrappers later in the code
+        var domain = window.location.host.split('.').slice(-2).join('.');
+        function convertURL(url){
+            try{
+                var tempURL = url.replace(/^\/\//, 'https://');
+                var parsedURL = new URL(tempURL);
+                if(parsedURL.host.split('.').slice(-2).join('.') === domain){
+                    return url;
+                }
+            }catch(e){
+                return url;
+            }
+            
+            if(/^https?:\/\/|^\/\//i.test(url)){
+                return url.replace(/^(http:\/\/|https:\/\/|\/\/)([^\/:]*)(?::(\d+))?/ig,
+                function(match, protocolCap, bodyURLCap, optionPortCap){ // cap for capture
+                    protocolCap = (protocolCap.toLowerCase()==='//'?window.location.protocol+'//':protocolCap);
+                    return window.location.protocol+'//'+(protocolCap.toLowerCase()==='https://'?'s':'ns')+(optionPortCap ? optionPortCap : '')+'--'+bodyURLCap.replace(/-/g, '_-').replace(/\./g, '--')+'.'+domain;
+                });
+            }else if(/^wss?:\/\//i.test(url)){
+                return url.replace(/^ws(s):\/\/?([^\/:]*)(?::(\d+))?/ig,
+                function(match, protocolCap, bodyURLCap, optionPortCap){ // cap for capture
+                    return (window.location.protocol === 'https:' ? 'wss:' : 'ws:')+'//'+(protocolCap.toLowerCase()==='s'?'s':'ns')+(optionPortCap ? optionPortCap : '')+'--'+bodyURLCap.replace(/-/g, '_-').replace(/\./g, '--')+'.'+domain;
+                });
+            }else{
+                return url;
+            }
+        }
+        function processElementAttributes(element){
+            if(element.nodeType !== Node.ELEMENT_NODE) return element;
+            for(var c = 0; c < element.attributes.length; c++){
+                element.setAttribute(element.attributes[c].name, convertURL(element.attributes[c].value));
+            }
+            return element;
+        }
+        
+        // Websocket wrapper
+        var rWS = WebSocket;
+        WebSocket = function(url) {
+            return new(Function.prototype.bind.call(rWS, null, convertURL(url)));
+        };
+        
+        // XMLHttpRequest wrapper
+        var origOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(...args) {
+            args[1] = convertURL(args[1]);
+            origOpen.apply(this, args);
+        };
+        
+        // fetch wrapper
+        if(fetch){ // if statement here for handling old browsers without fetch support
+            var originalFetch = fetch;
+            originalFetch = function(...args){
+                if(typeof args[0] === 'string' || args[0] instanceof String) args[0] = convertURL(args[0]);
+                return new(Function.prototype.bind.call(originalFetch, null, ...args));
+            };
+        }
+        
+        // Request wrapper for fetch
+        if(Request){
+            var originalRequest = Request;
+            Request = function(...args){
+                args[0] = convertURL(args[0]);
+                return new(Function.prototype.bind.call(originalRequest, null, ...args));
+            };
+        }
+        
+        // window.open wrapper
+        var origWinOpen = window.open;
+        window.open = function(...args){
+            if(args[0]) args[0] = convertURL(args[0]);
+            return origWinOpen(...args);
+        };
+        
+        // window.postMessage wrapper
+        var origPostMessage = window.postMessage;
+        window.postMessage = function(...args){
+            if(args[1]) args[1] = convertURL(args[1]);
+            return origPostMessage(...args);
+        };
+        // frail attempt at wrapping window.parent.postMessage
+        // var origParentPostMessage = window.parent.postMessage;
+        // window.parent.postMessage = function(...args){
+        //     console.log(args);
+        //     if(args[1]) args[1] = convertURL(args[1]);
+        //     return origParentPostMessage(...args);
+        // };
+        
+        
+        
+        // The following wrapper is for handling html modifications
+        
+        // Handles all appending elements. Only run this after the page has loaded... or else it would just... lag
+        window.addEventListener('load', function(){
+            var observer = new MutationObserver(function(mutationList){
+                for(var mutation of mutationList){
+                    if(mutation.type === 'attributes'){
+                        if(mutation.target.nodeType === Node.ELEMENT_NODE){
+                            observer.disconnect(); // MUST DISCONNECT or else it will result in an infinite loop
+                            mutation.target.setAttribute(mutation.attributeName, convertURL(mutation.target.getAttribute(mutation.attributeName)));
+                            observeAgain();
+                        }
+                    }else if(mutation.type === 'childList'){
+                        for(var eachNode of mutation.addedNodes){
+                            observer.disconnect();
+                            processElementAttributes(eachNode);
+                            observeAgain();
+                        }
+                    }
+                }
+            });
+            function observeAgain(){observer.observe(document, {attributes: true, childList: true, subtree: true})}
+            observeAgain();
+        });
+        
+        
+        // The following is of no use since MutationObserver already handles all changes of the DOM
+        // Leaving this here for educational purposes
+        
+        // appending functions wrapper
+        // var originalNodeAppend = Node.prototype.appendChild;
+        // var originalNodeInsertBefore = Node.prototype.insertBefore;
+        // Node.prototype.appendChild = function(...args){
+        //     processElementAttributes(args[0]);
+        //     return originalNodeAppend.apply(this, args);
+        // };
+        // Node.prototype.insertBefore = function(...args){
+        //     processElementAttributes(args[0]);
+        //     return originalNodeInsertBefore.apply(this, args);
+        // };
+    })();
+</script>
