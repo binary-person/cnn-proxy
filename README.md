@@ -1,5 +1,6 @@
 # CNN Proxy
 [<img src="https://svgur.com/i/KR4.svg" width="50%">](https://www.skysilk.com/ref/LoN8hTt8Mu)
+
 Table of contents:
 
 - [Project details](#project-details)
