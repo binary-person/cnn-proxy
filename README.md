@@ -1,5 +1,5 @@
 # CNN Proxy
-
+[<img src="https://svgur.com/i/KR4.svg" width="50%">](https://www.skysilk.com/ref/LoN8hTt8Mu)
 Table of contents:
 
 - [Project details](#project-details)
@@ -330,5 +330,5 @@ Because JSON doesn't like regexes, the regex is to be put inside a string and be
 This software is released under GNU General Public License version 3. A copy of this license is available in the repository's root directory with a file named "LICENSE."
 I may work on this project more, or I may not touch it for a couple of years. Either way, if you wish to contribute, make a pull request and I'll be more than happy to take a look at it.
 
-Made with love,
+Made with love,<br>
 Simon Cheng
