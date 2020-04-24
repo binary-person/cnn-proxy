@@ -49,7 +49,6 @@ Currently, this proxy can proxy:
 - Google Maps
 - YouTube
 - Discord
-- Netflix (not sure, but heard from beta-testers that this works)
 - Any sites that are hosted on ports other than the default (like https for 443 and http for 80)
 - Any sites with logins
 - Any sites with websockets
