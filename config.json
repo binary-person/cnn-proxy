@@ -1,6 +1,7 @@
 {
     "bindingAddress": "127.0.0.1",
     "port": 8888,
+    "defaultIPv6": false,
     "enableFilterJavascript": false,
     "obscureDomainChecking": false,
     "injectCode": true,

@@ -9,6 +9,7 @@ var URL = require('url').URL;
 var httpStatic = require('node-static');
 
 var fileServer = new httpStatic.Server(config.publicFolder);
+var ipFamily = config.defaultIPv6 ? 6 : 4;
 
 function requestHandler(client_req, client_res) {
     // Handle if client decides to fetch the main page of the proxy
@@ -42,6 +43,7 @@ function requestHandler(client_req, client_res) {
     var options = {
         hostname: parsed.targetHost,
         port: parsed.port,
+        family: ipFamily,
         path: client_req.url,
         method: client_req.method,
         headers: processHeaders.clientHeaderProcesser(client_req.headers, parsed)

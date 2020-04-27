@@ -15,6 +15,7 @@ Table of contents:
 - [config.json documentation](#config.json-documentation)
 	- [bindingAddress](#bindingaddress)
 	- [port](#port)
+	- [defaultIPv6](#defaultipv6)
 	- [enableFilterJavascript](#enablefilterjavascript)
 	- [obscureDomainChecking](#obscuredomainchecking)
 	- [injectCode](#injectcode)
@@ -208,6 +209,7 @@ The default/recommended config should look something like this:
 {
     "bindingAddress": "127.0.0.1",
     "port": 8888,
+    "defaultIPv6": false,
     "enableFilterJavascript": false,
     "obscureDomainChecking": false,
     "injectCode": true,
@@ -241,6 +243,12 @@ Just to clarify, "filtering" simply means to process the file and replace all oc
 
 type: `String`<br>
 Highly recommended that this option is set to `"127.0.0.1"` since this app shouldn't be available publically other than locally, which is only accessed by nginx.
+
+
+### defaultIPv6
+
+type: `boolean`<br>
+Enabling this will force nodejs's requests to default to IPv6. Doesn't not work if your machine doesn't have a IPv6 address.
 
 
 ### port
