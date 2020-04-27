@@ -246,7 +246,8 @@ Highly recommended that this option is set to `"127.0.0.1"` since this app shoul
 ### port
 
 type: `Integer`<br>
-If you are planning to change this value, be sure to update the `$node_port` variable in the nginx.conf so that nginx can reach the node app.
+If you are planning to change this value, be sure to update the the port under `upstream` in the nginx.conf so that nginx can reach the node app.<br>
+Note that this can be overridden by specifying an argument like so: `node index.js 8889`
 
 
 ### enableFilterJavascript
