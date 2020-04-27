@@ -72,4 +72,9 @@ function requestHandler(client_req, client_res) {
 }
 
 var port = process.argv[2] || config.port; // override config's port if argument is passed like "node index.js 8888". Super useful for load balancing
-http.createServer(requestHandler).listen(port, config.bindingAddress, ()=>console.log('CNN node proxy running on '+config.bindingAddress+':'+port));
+
+http.createServer(requestHandler)
+.listen(port, config.bindingAddress, ()=>console.log('CNN node proxy running on '+config.bindingAddress+':'+port))
+.on('connection', function (socket) { 
+    socket.setNoDelay(true); // better latency
+});
