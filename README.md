@@ -248,7 +248,8 @@ Highly recommended that this option is set to `"127.0.0.1"` since this app shoul
 ### defaultIPv6
 
 type: `boolean`<br>
-Enabling this will force nodejs's requests to default to IPv6. Doesn't not work if your machine doesn't have a IPv6 address.
+Enabling this will force nodejs's requests to default to IPv6. Doesn't not work if your machine doesn't have a IPv6 address.<br>
+This is super duper not recommended since requests to non-IPv6 websites will break.
 
 
 ### port
