@@ -163,6 +163,12 @@ Overwrite the existing nginx.conf, replacing it with CNN's nginx.conf.
 $ sudo cp ~/cnn-proxy/nginx.conf /etc/nginx/nginx.conf
 ```
 
+Now we need to update the changes.
+```
+$ sudo service nginx restart
+```
+Note that if this command doesn't work, you have an app running on port 80 that's conflicting with this.
+
 Change directory to the cloned CNN proxy and install the required modules.
 
 ```
