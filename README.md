@@ -347,14 +347,15 @@ This option is used to determine what mime to associate with content-type in cas
 
 type: `Array[..."regex"]`<br>
 This option determines whether to block the domain or not.<br>
-Because JSON doesn't like regexes, the regex is to be put inside a string and be passed into the function `new RegExp(stringRegex)`. Therefore, the test function is `(new RegExp(stringRegex)).test(targetDomain)`.
+Because JSON doesn't like regexes, the regex is to be put inside a string and be passed into the function `new RegExp(stringRegex)`. Therefore, the test function is `(new RegExp(stringRegex)).test(targetDomain)`.<br>
+An example of blocking everything would be `[^]*` and an example of blocking `example.com` would be `example\\.com`.
 
 
 ### whitelistDomains
 
 type: `Array[..."regex"]`<br>
 This option determines whether to allow the domain or not.<br>
-This is essentially the same as `blacklistDomains`, but this takes precedence. A use case would be to have a wildcard blacklistDomain `*` to block everything and using this option to allow certain websites.
+This is essentially the same as `blacklistDomains`, but this takes precedence. A use case would be to have a wildcard blacklistDomain `[^]*` to block everything and using this option to allow certain websites.
 
 
 ## Ending notes
