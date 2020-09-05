@@ -43,7 +43,12 @@ exports.getMime = function(extension){ // used to handle the default mime config
     return config.associateMime.hasOwnProperty(extension) ? config.associateMime[extension] : config.defaultMime;
 };
 exports.checkBlacklistDomain = function(domain){
-    for(var stringRegex of config.blacklistDomains){
+    for(let stringRegex of config.whitelistDomains){
+        if((new RegExp(stringRegex)).test(domain)){
+            return false;
+        }
+    }
+    for(let stringRegex of config.blacklistDomains){
         if((new RegExp(stringRegex)).test(domain)){
             return true;
         }

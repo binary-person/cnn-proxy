@@ -24,5 +24,6 @@
     "defaultMime": "application/octet-stream",
     "blacklistDomains": [
         "example\\.com"
-    ]
+    ],
+    "whitelistDomains": []
 }
