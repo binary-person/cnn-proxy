@@ -1,0 +1,14 @@
+<script>
+    function redirect(){
+        var redirectURL = (new window.URL(window.location.href)).searchParams.get('url');
+        if(redirectURL){
+            window.location.href = redirectURL;
+        }else{
+            window.location.href = '/';
+        }
+    }
+    setTimeout(redirect, 10000);
+</script>
+
+<p>Session cookie successfully set. Click <a href="#" onclick="redirect()">here</a> if it does not redirect you within 10 seconds</p>
+<noscript>This page requires javascript to function</noscript>

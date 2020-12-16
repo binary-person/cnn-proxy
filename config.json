@@ -1,6 +1,8 @@
 {
     "bindingAddress": "127.0.0.1",
     "port": 8888,
+    "sessionPeriod": 86400000,
+    "sessionCookieName": "CNN_PROXY_SESSION_ID",
     "defaultIPv6": false,
     "enableFilterJavascript": false,
     "obscureDomainChecking": false,

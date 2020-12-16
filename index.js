@@ -2,6 +2,7 @@ var config = require('./config.json');
 var processURL = require('./libs/processURL.js');
 var processHeaders = require('./libs/processHeaders.js');
 var processBody = require('./libs/processBody.js');
+var handleSessions = require('./libs/handleSessions.js');
 var handyUtils = require('./libs/handyUtils.js');
 
 var http = require('http');
@@ -12,8 +13,18 @@ var fileServer = new httpStatic.Server(config.publicFolder);
 var ipFamily = config.defaultIPv6 ? 6 : 4;
 
 function requestHandler(client_req, client_res) {
+    var hostSplit = client_req.headers.host.split('.');
     // Handle if client decides to fetch the main page of the proxy
-    if(client_req.headers.host && client_req.headers.host.split('.').length === 2){ // root host should look something like blah.ga, resulting in a split length of 2
+    if(client_req.headers.host && hostSplit.length === 2){ // root host should look something like blah.ga, resulting in a split length of 2
+        // handle session redirect
+        if(client_req.url.split('?')[0] == '/session'){
+            fileServer.serveFile('/session.html', 200, {
+                'Set-Cookie': config.sessionCookieName + '=' + handleSessions.getID() + ' domain=' + client_req.headers.host
+            }, client_req. client_res);
+            return;
+        }
+        
+        // handle static pages
         fileServer.serve(client_req, client_res, function (e, res) {
             if (e && (e.status === 404))
                 fileServer.serveFile('/404.html', 404, {}, client_req, client_res);
@@ -21,11 +32,20 @@ function requestHandler(client_req, client_res) {
         return;
     }
     
+    // Handle sessions
+    if(!handleSessions.isSessionValid(client_req.headers.cookie)){
+        client_res.writeHead(302, {
+            'Location': 'https://' + hostSplit.slice(-2).join('.') + '/session?url=' + encodeURIComponent('https://' + client_req.headers.host + client_req.url)
+        });
+        client_res.end();
+        return;
+    }
+    
     
     // Proxying code
     var parsed = processURL.convertToOriginalHost(client_req.headers.host);
-    var originalProto = client_req.headers['x-forwarded-proto']; // same reason as above comment
-    var originalOrigin = client_req.headers['origin']; // same reason
+    var originalProto = client_req.headers['x-forwarded-proto'];
+    var originalOrigin = client_req.headers['origin'];
     
     client_req.url = processURL.processURLQueries(client_req.url);
     

@@ -215,6 +215,8 @@ The default/recommended config should look something like this:
 {
     "bindingAddress": "127.0.0.1",
     "port": 8888,
+    "sessionPeriod": 86400000,
+    "sessionCookieName": "CNN_PROXY_SESSION_ID",
     "defaultIPv6": false,
     "enableFilterJavascript": false,
     "obscureDomainChecking": false,
@@ -264,6 +266,18 @@ This is super duper not recommended since requests to non-IPv6 websites will bre
 type: `Integer`<br>
 If you are planning to change this value, be sure to update the the port under `upstream` in the nginx.conf so that nginx can reach the node app.<br>
 Note that this can be overridden by specifying an argument like so: `node index.js 8889`
+
+
+### sessionPeriod
+
+type: `Integer`<br>
+Takes a value in ms. On every `sessionPeriod` ms, the server will generate a new session that users are required to set as their cookie. A value of `0` disables this.
+
+
+### sessionCookieName
+
+type: `String`<br>
+Specifies the cookie name for the session ID.
 
 
 ### enableFilterJavascript
