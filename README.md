@@ -215,7 +215,7 @@ The default/recommended config should look something like this:
 {
     "bindingAddress": "127.0.0.1",
     "port": 8888,
-    "sessionPeriod": 86400000,
+    "sessionPeriod": 604800000,
     "sessionCookieName": "CNN_PROXY_SESSION_ID",
     "defaultIPv6": false,
     "enableFilterJavascript": false,
