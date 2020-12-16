@@ -19,7 +19,7 @@ function requestHandler(client_req, client_res) {
         // handle session redirect
         if(client_req.url.split('?')[0] == '/session'){
             fileServer.serveFile('/session.html', 200, {
-                'Set-Cookie': config.sessionCookieName + '=' + handleSessions.getID() + ' domain=' + client_req.headers.host
+                'Set-Cookie': config.sessionCookieName + '=' + handleSessions.getID() + '; domain=' + client_req.headers.host + '; HttpOnly'
             }, client_req, client_res);
             return;
         }
