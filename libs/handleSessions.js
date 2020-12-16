@@ -12,6 +12,7 @@ var currentSession = makeID();
 exports.getID = function(){
     if(lastSessionUpdate + config.sessionPeriod < Date.now()){
         currentSession = makeID();
+        lastSessionUpdate = Date.now();
     }
     return currentSession;
 };
