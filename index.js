@@ -20,7 +20,7 @@ function requestHandler(client_req, client_res) {
         if(client_req.url.split('?')[0] == '/session'){
             fileServer.serveFile('/session.html', 200, {
                 'Set-Cookie': config.sessionCookieName + '=' + handleSessions.getID() + ' domain=' + client_req.headers.host
-            }, client_req. client_res);
+            }, client_req, client_res);
             return;
         }
         
